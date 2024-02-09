@@ -1,0 +1,36 @@
+<template>
+        <div class="slds-theme_default">
+            <div class="container-identifier slds-page-header">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media slds-media_center">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container">
+                                    <lightning-icon icon-name="standard:knowledge">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                            <span class="slds-page-header__title slds-truncate"
+                                                title="Related List Name">Add Recommendation</span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <lightning-record-edit-form object-api-name="Recommendation__c">
+                <lightning-input-field field-name="Name"></lightning-input-field>
+                <lightning-input-field field-name="Recommended_By__c"></lightning-input-field>
+                <c-create-lookup-record object-api-name="Contact"></c-create-lookup-record>
+            </lightning-record-edit-form>
+        </div>
+    
+</template>

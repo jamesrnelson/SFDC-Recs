@@ -1,0 +1,56 @@
+<template>
+    <div class="slds-theme_default slds-p-around_small">
+        <span class="slds-size_1-of-1 slds-grid slds-wrap slds-gutters slds-p-left_small slds-grid_vertical-align-center">
+            <span class="slds-col slds-size_1-of-1">
+                <lightning-input
+                    onchange={handleSearchTermChange}
+                    type="text"
+                    name="recordName"
+                    placeholder="Search Records"
+                    value={searchedRecordName}
+                    nolabel
+                ></lightning-input>
+            </span>
+        
+            <span class="slds-col slds-size_1-of-1 slds-p-top_medium">
+                <template if:true={displayCreateButton}>
+                    <lightning-button   
+                        variant="brand"
+                        label={labelDisplay}
+                        title="Create"
+                        value={searchParam}
+                        onclick={handleCreateRecord}
+                    ></lightning-button>
+                </template>
+            </span>
+            <span class="slds-col slds-size_1-of-1 slds-p-top_medium">
+                <template if:true={searchedRecordName}>
+                    <lightning-button   
+                        variant="default"
+                        label="Clear Results"
+                        title="Clear Results"
+                        onclick={handleClearResults}
+                    ></lightning-button>
+                </template>
+            </span>
+        </span>
+        <template for:each={recordList} for:item="record">
+            <div key={record.Id} data-key={record.Id}>
+                <span class="slds-size_1-of-1 slds-grid slds-wrap slds-gutters slds-p-top_small slds-grid_vertical-align-center">
+                    <span class="slds-col slds-size_1-of-4">{record.Name}</span>
+                    <span class="slds-col slds-size_1-of-6">
+                        <lightning-button   
+                            variant="default"
+                            label="Add"
+                            title="Add"
+                            value={record.Id}
+                            onclick={handleAddRecord}
+                            class="slds-m-top_small slds-p-left_small">
+                        </lightning-button>
+                    </span>
+                </span>
+            </div>
+        </template>
+
+    </div>
+</template>
