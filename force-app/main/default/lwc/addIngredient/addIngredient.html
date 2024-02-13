@@ -19,7 +19,7 @@
                         </lightning-icon>
                         <span class="slds-assistive-text">Close</span>
                     </button>
-                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{createOrEdit} Record</h2>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{placeholderText}</h2>
                 </header>
                 <!-- modal body start -->
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
@@ -29,6 +29,7 @@
                         <c-ingredient-search-and-add-component
                             parent-id={recordId}
                             inserted-object={insertedObject}
+                            placeholder={placeholderText}
                         ></c-ingredient-search-and-add-component>
 
                     <!-- End add ingredient section -->

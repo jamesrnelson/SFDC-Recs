@@ -10,6 +10,7 @@ export default class AddIngredient extends LightningElement {
     @api parentLookupField;
     @api variant;
     @api insertedObject;
+    @api placeholderText;
 
     @track showObjectModal;
     @track objectInfo;
