@@ -1,3 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class Recommendation extends LightningElement {}
+
+export default class Recommendation extends LightningElement {
+
+}

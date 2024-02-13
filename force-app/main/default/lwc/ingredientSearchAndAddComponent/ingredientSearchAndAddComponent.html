@@ -5,8 +5,8 @@
                 onchange={handleSearchTermChange}
                 type="text"
                 name="recipeName"
-                placeholder="Search Ingredients"
-                value={searchedIngredientName}
+                placeholder={placeholder}
+                value={searchedRecord}
                 nolabel
             ></lightning-input>
         </span>
@@ -23,7 +23,7 @@
             </template>
         </span>
         <span class="slds-col slds-size_1-of-1 slds-p-top_medium">
-            <template if:true={searchedIngredientName}>
+            <template if:true={searchedRecord}>
                 <lightning-button   
                     variant="default"
                     label="Clear Results"
@@ -33,35 +33,16 @@
             </template>
         </span>
     </span>
-    <template for:each={ingredientList} for:item="ingredient">
-        <div key={ingredient.Id} data-key={ingredient.Id}>
+    <template for:each={recordList} for:item="record">
+        <div key={record.Id} data-key={record.Id}>
             <span class="slds-size_1-of-1 slds-grid slds-wrap slds-gutters slds-p-top_small slds-grid_vertical-align-center">
-                <lightning-input
-                    onchange={handleQuantityChange}
-                    class="slds-col slds-size_1-of-4 slds-m-around_x-small "
-                    type="number"
-                    name={ingredient.Id}
-                    step="0.001"
-                    placeholder="Quantity"
-                    value=""
-                    variant="label-hidden"
-                ></lightning-input>
-                <lightning-combobox
-                    name={ingredient.Id}
-                    class="slds-col slds-size_1-of-4 slds-m-around_x-small "
-                    value={value}
-                    placeholder="Measurement"
-                    options={options}
-                    onchange={handleMeasurementChange}
-                    variant="label-hidden"
-                ></lightning-combobox>
-                <span class="slds-col slds-size_1-of-4">{ingredient.Name}</span>
+                <span class="slds-col slds-size_1-of-4">{record.Name}</span>
                 <span class="slds-col slds-size_1-of-6">
                     <lightning-button   
                         variant="default"
                         label="Add"
                         title="Add"
-                        value={ingredient.Id}
+                        value={record.Id}
                         onclick={handleAddIngredient}
                         class="slds-m-top_small slds-p-left_small">
                     </lightning-button>

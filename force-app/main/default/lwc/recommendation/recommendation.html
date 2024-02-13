@@ -25,12 +25,59 @@
 
                 </div>
             </div>
-
+            
             <lightning-record-edit-form object-api-name="Recommendation__c">
-                <lightning-input-field field-name="Name"></lightning-input-field>
-                <lightning-input-field field-name="Recommended_By__c"></lightning-input-field>
-                <c-create-lookup-record object-api-name="Contact"></c-create-lookup-record>
-            </lightning-record-edit-form>
+                <div class="slds-grid slds-wrap">
+                    <span class="slds-col slds-size_1-of-1">
+                        <lightning-input-field field-name="Name"></lightning-input-field>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <lightning-input-field field-name="Recommended_By__c" value={addedRecommender}></lightning-input-field>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <c-add-ingredient
+                            variant="brand"
+                            label="Add"
+                            record-id={recordId}
+                            inserted-object="Contact"
+                            onrecordselection={handleRecordSelection}
+                            target-field="Recommended_By__c"
+                            placeholder-text="Search contacts"
+                            
+                        ></c-add-ingredient>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <lightning-input-field field-name="Recommendation_Type__c" value={addedRecommendationType}></lightning-input-field>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <c-add-ingredient
+                            variant="brand"
+                            label="Add"
+                            record-id={recordId}
+                            inserted-object="Recommendation_Type__c"
+                            onrecordselection={handleRecordSelection}
+                            target-field="Recommendation_Type__c"
+                            placeholder-text="Search recommendation types"
+
+                        ></c-add-ingredient>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <lightning-input-field field-name="Creator_Author__c" value={addedCreator}></lightning-input-field>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <c-add-ingredient
+                            variant="brand"
+                            label="Add"
+                            record-id={recordId}
+                            inserted-object="Contact"
+                            onrecordselection={handleRecordSelection}
+                            target-field="Creator_Author__c"
+                            placeholder-text="Search contacts"
+
+                        ></c-add-ingredient>
+                    </span>
+                </div> 
+                </lightning-record-edit-form>
         </div>
     
 </template>

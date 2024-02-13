@@ -1,16 +1,18 @@
 import { LightningElement, track, wire, api } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import getSearchedIngredients from '@salesforce/apex/LookupRecordController.getContacts';
-import getPicklistValues from '@salesforce/apex/LookupRecordController.createRecord';
+import getSearchedRecords from '@salesforce/apex/RecordController.getSearchedRecords';
+import createRecord from '@salesforce/apex/RecordController.createRecord';
 
 export default class IngredientSearchAndAddComponent extends LightningElement {
     @api parentId;
     @api insertedObject;
+    @api placeholder;
+    @api targetField;
     
-    @track searchedIngredientName;
+    @track searchedRecord;
 
-    ingredientList = [];
+    recordList = [];
     options;
     displayCreateButton;
     draftValues = {};
@@ -19,28 +21,21 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
 
     connectedCallback() {
         // dynamic object
-        getPicklistValues({objectApiName: 'Recipe_Ingredient__c', fieldApiName: 'Measurement__c'})
-            .then(result => {
-                this.options = result;
-            })
-            .catch(error => {
-                console.log('error getting picklist values', error);
-            })
     }
 
-    @wire(getSearchedIngredients, {param: '$searchedIngredientName'})
+    @wire(getSearchedRecords, {param: '$searchedRecord', objectApiName: '$insertedObject'})
     foundIngredients(result) {
-        this.queriedIngredientData = result
+        this.queriedRecordData = result
         if (result.data) {
-            if(this.searchedIngredientName) {
-                this.ingredientList = result.data;
+            if(this.searchedRecord) {
+                this.recordList = result.data;
             } else {
-                this.ingredientList = [];
+                this.recordList = [];
             }
-            let ingredientSize = Object.keys(this.ingredientList).length;
-            if(ingredientSize === 0 && this.searchedIngredientName) {
+            let recordSize = Object.keys(this.recordList).length;
+            if(recordSize === 0 && this.searchedRecord) {
                 this.displayCreateButton = true;
-                this.labelDisplay = `Create new ingredient: '${this.searchedIngredientName}'`;
+                this.labelDisplay = `Create new ${this.insertedObject}: '${this.searchedRecord}'`;
             } else {
                 this.displayCreateButton = false;
             }
@@ -48,7 +43,7 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
         } else if (result.error) {
             this.error = result.error;
             console.log('error', error);
-            this.ingredientList = undefined;
+            this.recordList = undefined;
         }
     }
 
@@ -78,9 +73,9 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
     }
 
     handleCreateIngredient() {
-        createIngredient({ingredientName: this.searchedIngredientName})
+        createRecord({recordName: this.searchedRecord, objectApiName: this.insertedObject})
             .then(result => {
-                refreshApex(this.queriedIngredientData);
+                refreshApex(this.queriedRecordData);
 
             })
             .catch(error => {
@@ -96,33 +91,23 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
 		const searchTerm = event.target.value;
 		// eslint-disable-next-line @lwc/lwc/no-async-operation
 		this.delayTimeout = setTimeout(() => {
-			this.searchedIngredientName = searchTerm;
+			this.searchedRecord = searchTerm;
 		}, 300);
 	}
 
     handleAddIngredient(event) {
 
-        const ingredientId = event.target.value;
-        const parentId = this.parentId;
+        const recordId = event.target.value;
 
         // udpate here so that it can be a recipe or shopping list
-        let junctionIngredient = {
-            Ingredient__c: ingredientId,
-            Quantity__c: this.draftValues[ingredientId]['Quantity__c'],
-            Measurement__c: this.draftValues[ingredientId]['Measurement__c']
-        }
+        let junctionIngredient = {};
+        junctionIngredient.attributes = {type: this.insertedObject};
+        junctionIngredient[this.targetField] = recordId;
        
-        if (this.insertedObject == 'Shopping_List_Ingredient__c') {
-            junctionIngredient.attributes = {type: 'Shopping_List_Ingredient__c'};
-            junctionIngredient.Shopping_List__c = parentId;
-        } else if (this.insertedObject == 'Recipe_Ingredient__c') {
-            junctionIngredient.attributes = {type: 'Recipe_List_Ingredient__c'};
-            junctionIngredient.Recipe__c = parentId;
-        }
         console.log('junction ingredient', junctionIngredient)
-        createRecipeOrShoppingListIngredient({junctionIngredient: JSON.stringify(junctionIngredient)})
+        createRecord({junctionIngredient: JSON.stringify(junctionIngredient)})
             .then(() => {
-                this.showCustomToast('Added ingredient to recipe', null, 'success', 'dismissable');
+                this.showCustomToast('created record', null, 'success', 'dismissable');
                 if(this.insertedObject == 'Recipe_List_Ingredient__c') {
                     this.template.querySelector('c-display-recipe-ingredients').handleIngredientAddition();
 
@@ -149,7 +134,7 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
     }
 
     handleClearResults() {
-        this.searchedIngredientName = '';
+        this.searchedRecord = '';
         this.ingredientList = [];
     }
 }
