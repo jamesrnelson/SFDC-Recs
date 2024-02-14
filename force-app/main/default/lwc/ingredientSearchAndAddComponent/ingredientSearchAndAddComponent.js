@@ -95,27 +95,17 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
 		}, 300);
 	}
 
-    handleAddIngredient(event) {
-
-        const recordId = event.target.value;
-
-        // udpate here so that it can be a recipe or shopping list
-        let junctionIngredient = {};
-        junctionIngredient.attributes = {type: this.insertedObject};
-        junctionIngredient[this.targetField] = recordId;
-       
-        console.log('junction ingredient', junctionIngredient)
-        createRecord({junctionIngredient: JSON.stringify(junctionIngredient)})
-            .then(() => {
-                this.showCustomToast('created record', null, 'success', 'dismissable');
-                if(this.insertedObject == 'Recipe_List_Ingredient__c') {
-                    this.template.querySelector('c-display-recipe-ingredients').handleIngredientAddition();
-
-                }
-            })
-            .catch(error => {
-                console.log('error creating recipe Ingredient.', error);
-            })
+    handlePopulateLookup(event) {
+        console.log('in the grandchild component')
+        console.log('this.targetField', this.targetField);
+        console.log('event.targe.value', event.target.value);
+        let props = {
+            fieldName: this.targetField,
+            value: event.target.value,
+            bubbles: true
+        }
+        console.log('props', props);
+        this.dispatchEvent(new CustomEvent('recordselection', props));
     }
 
     showCustomToast(title, message, variant, mode) {
