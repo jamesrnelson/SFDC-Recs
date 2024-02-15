@@ -100,11 +100,15 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
         console.log('this.targetField', this.targetField);
         console.log('event.targe.value', event.target.value);
         let props = {
-            fieldName: this.targetField,
-            value: event.target.value,
-            bubbles: true
+            detail: {
+                fieldName: this.targetField,
+                value: event.target.value,
+            },
+            bubbles: true,
+            composed: true
         }
-        console.log('props', props);
+        console.log('props.fieldName', props.detail.fieldName);
+        console.log('props.value', props.detail.value);
         this.dispatchEvent(new CustomEvent('recordselection', props));
     }
 
