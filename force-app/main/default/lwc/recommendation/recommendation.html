@@ -76,7 +76,51 @@
 
                         ></c-add-ingredient>
                     </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <lightning-input-field field-name="Genre__c" value={addedGenre}></lightning-input-field>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <c-add-ingredient
+                            variant="brand"
+                            label="Add"
+                            record-id={recordId}
+                            inserted-object="Genre__c"
+                            onrecordselection={handleRecordSelection}
+                            target-field="Genre__c"
+                            placeholder-text="Search genres"
+
+                        ></c-add-ingredient>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <lightning-input-field field-name="Platform__c" value={addedPlatform}></lightning-input-field>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <c-add-ingredient
+                            variant="brand"
+                            label="Add"
+                            record-id={recordId}
+                            inserted-object="Platform__c"
+                            onrecordselection={handleRecordSelection}
+                            target-field="Platform__c"
+                            placeholder-text="Search platforms"
+
+                        ></c-add-ingredient>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <lightning-input-field field-name="Action__c" value=""></lightning-input-field>
+                    </span>
+                    <span class="slds-col slds-size_1-of-2">
+                        <lightning-input-field field-name="Notes__c" value=""></lightning-input-field>
+                    </span>
                 </div> 
+                <lightning-button
+                    class="slds-m-top_small"
+                    variant="brand"
+                    type="submit"
+                    name="update"
+                    label="Create New Rec"
+                >
+                </lightning-button>
                 </lightning-record-edit-form>
         </div>
     
