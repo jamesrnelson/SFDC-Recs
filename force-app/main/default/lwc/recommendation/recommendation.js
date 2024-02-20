@@ -1,5 +1,5 @@
 import { LightningElement } from 'lwc';
-
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class Recommendation extends LightningElement {
     addedRecommendationType;
@@ -32,5 +32,28 @@ export default class Recommendation extends LightningElement {
         } catch (err) {
             console.log('error', err);
         }
+    }
+
+    handleSuccess() {
+        this.showCustomToast('Recommendation Added','', 'success', 'dismissable');
+        const inputFields = this.template.querySelectorAll(
+            'lightning-input-field'
+        );
+        if (inputFields) {
+            inputFields.forEach(field => {
+                field.reset();
+            });
+        }
+    }
+
+    showCustomToast(title, message, variant, mode) {
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: title,
+                message: message,
+                variant: variant,
+                mode: mode
+            })
+        );
     }
 }
