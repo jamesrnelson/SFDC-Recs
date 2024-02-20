@@ -96,9 +96,6 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
 	}
 
     handlePopulateLookup(event) {
-        console.log('in the grandchild component')
-        console.log('this.targetField', this.targetField);
-        console.log('event.targe.value', event.target.value);
         let props = {
             detail: {
                 fieldName: this.targetField,
@@ -107,8 +104,6 @@ export default class IngredientSearchAndAddComponent extends LightningElement {
             bubbles: true,
             composed: true
         }
-        console.log('props.fieldName', props.detail.fieldName);
-        console.log('props.value', props.detail.value);
         this.dispatchEvent(new CustomEvent('recordselection', props));
     }
 
