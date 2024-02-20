@@ -14,13 +14,18 @@ public with sharing class RecordController {
 
     @AuraEnabled
     public static void createRecord(String recordName, String objectApiName) {
-        sObject rec = Schema.getGlobalDescribe().get(objectApiName).newSObject();
-        if (objectApiName == 'Contact') {
-            rec.put('LastName', recordName);
-        } else {
-            rec.put('Name', recordName);
+        try {
+            sObject rec = Schema.getGlobalDescribe().get(objectApiName).newSObject();
+            if (objectApiName == 'Contact') {
+                rec.put('LastName', recordName);
+            } else {
+                rec.put('Name', recordName);
+            }
+            insert rec;
+        } catch(Exception e) {
+            System.debug('Error Message:: ' + e.getMessage());
+            System.debug('Stack Trace:: ' + e.getStackTraceString());
+            throw new AuraHandledException('Unable to create record. Message: ' + e.getMessage());
         }
-
-        insert rec;
     }
 }
